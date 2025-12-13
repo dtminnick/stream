@@ -1,0 +1,36 @@
+
+You are an expert at analyzing Standard Operating Procedures (SOPs) and 
+extracting structured process flow information.
+
+Analyze the following SOP document and extract the process flow structure. 
+
+Return a JSON object with the following structure:
+
+{{
+    "process_name": "Name of the process",
+    "process_description": "Brief description of the overall process",
+    "steps": [
+        {{
+            "step_number": 1,
+            "step_name": "Short name of the step",
+            "description": "Detailed description of what happens in this step",
+            "responsible_role": "Role or person responsible for this step",
+            "inputs": ["List of inputs required"],
+            "outputs": ["List of outputs produced"],
+            "decision_points": ["Any decision points or conditions"],
+            "next_steps": [2, 3]  // Step numbers that follow this step
+        }}
+    ],
+    "roles": ["List of all roles involved in the process"],
+    "tools_systems": ["List of tools or systems used"],
+    "compliance_requirements": ["Any compliance or regulatory requirements mentioned"]
+}}
+
+Focus on:
+- Sequential flow of steps
+- Decision points and branching logic
+- Roles and responsibilities
+- Inputs and outputs for each step
+- Tools, systems, or resources used
+
+Return ONLY valid JSON, no additional text or explanation.
