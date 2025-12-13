@@ -1,0 +1,140 @@
+
+[
+  {
+    "process_name": "Employee Onboarding",
+    "process_description": "Standard procedure for onboarding new employees into the organization.",
+    "source_document": "Document 1.txt",
+    "document_path": "Path to document",
+    "extraction_model": "gpt-4.1",
+    "steps": [
+      {
+        "step_number": 1,
+        "step_name": "Collect Documents",
+        "description": "HR collects necessary documents from the new hire including ID, tax forms, and signed offer letter.",
+        "responsible_role": "HR Coordinator",
+        "inputs": ["Signed offer letter", "Government-issued ID", "Tax forms"],
+        "outputs": ["Verified employee file"],
+        "tools": ["ARK", "ACE"], 
+        "decision_points": ["Are all documents complete and valid?"],
+        "next_steps": [2]
+      },
+      {
+        "step_number": 2,
+        "step_name": "Create System Accounts",
+        "description": "IT creates email, HR portal, and system accounts for the new employee.",
+        "responsible_role": "IT Administrator",
+        "inputs": ["Verified employee file"],
+        "outputs": ["Active system accounts"],
+        "tools": ["ARK", "ACE"],
+        "decision_points": ["Does employee require special system access?"],
+        "next_steps": [3]
+      },
+      {
+        "step_number": 3,
+        "step_name": "Orientation",
+        "description": "HR schedules and conducts orientation session covering company policies and compliance.",
+        "responsible_role": "HR Trainer",
+        "inputs": ["Active system accounts", "Orientation materials"],
+        "outputs": ["Employee trained on policies"],
+        "tools": ["ARK"],
+        "decision_points": ["Did employee complete orientation successfully?"],
+        "next_steps": []
+      }
+    ]
+  },
+  {
+    "process_name": "Purchase Order Approval",
+    "process_description": "Procedure for requesting, reviewing, and approving purchase orders.",
+    "source_document": "Document 2.txt",
+    "document_path": "Path to document",
+    "extraction_model": "gpt-4.1",
+    "steps": [
+      {
+        "step_number": 1,
+        "step_name": "Submit Request",
+        "description": "Employee submits purchase request through procurement system.",
+        "responsible_role": "Requesting Employee",
+        "inputs": ["Purchase request form"],
+        "outputs": ["Submitted request"],
+        "tools": ["ARK"],
+        "decision_points": ["Is the request complete?"],
+        "next_steps": [2]
+      },
+      {
+        "step_number": 2,
+        "step_name": "Manager Review",
+        "description": "Manager reviews request for budget alignment and necessity.",
+        "responsible_role": "Department Manager",
+        "inputs": ["Submitted request"],
+        "outputs": ["Approved or rejected request"],
+        "tools": ["ARK"],
+        "decision_points": ["Is the request within budget?"],
+        "next_steps": [3]
+      },
+      {
+        "step_number": 3,
+        "step_name": "Finance Approval",
+        "description": "Finance team validates funds availability and compliance with procurement policy.",
+        "responsible_role": "Finance Officer",
+        "inputs": ["Approved request"],
+        "outputs": ["Final approval or rejection"],
+        "tools": ["ARK", "Chorus"],
+        "decision_points": ["Does request meet procurement compliance?"],
+        "next_steps": []
+      }
+    ]
+  },
+  {
+    "process_name": "Customer Complaint Resolution",
+    "process_description": "Procedure for handling and resolving customer complaints.",
+    "source_document": "Document 3.txt",
+    "document_path": "Path to document",
+    "extraction_model": "gpt-4.1",
+    "steps": [
+      {
+        "step_number": 1,
+        "step_name": "Receive Complaint",
+        "description": "Customer service receives complaint via phone, email, or web form.",
+        "responsible_role": "Customer Service Representative",
+        "inputs": ["Customer complaint details"],
+        "outputs": ["Logged complaint ticket"],
+        "tools": ["ARK"],
+        "decision_points": ["Is complaint information sufficient?"],
+        "next_steps": [2]
+      },
+      {
+        "step_number": 2,
+        "step_name": "Investigate Issue",
+        "description": "Support team investigates the issue by reviewing records and contacting relevant departments.",
+        "responsible_role": "Support Specialist",
+        "inputs": ["Logged complaint ticket", "Customer records"],
+        "outputs": ["Investigation report"],
+        "tools": ["ARK"],
+        "decision_points": ["Is issue resolvable internally?"],
+        "next_steps": [3, 4]
+      },
+      {
+        "step_number": 3,
+        "step_name": "Resolve Internally",
+        "description": "Support team resolves issue and updates customer.",
+        "responsible_role": "Support Specialist",
+        "inputs": ["Investigation report"],
+        "outputs": ["Resolved complaint"],
+        "tools": ["ARK"],
+        "decision_points": ["Is customer satisfied with resolution?"],
+        "next_steps": []
+      },
+      {
+        "step_number": 4,
+        "step_name": "Escalate",
+        "description": "Escalate unresolved issue to management for further action.",
+        "responsible_role": "Customer Service Manager",
+        "inputs": ["Investigation report"],
+        "outputs": ["Escalated case"],
+        "tools": ["ARK"],
+        "decision_points": ["Does escalation require legal involvement?"],
+        "next_steps": []
+      }
+    ]
+  }
+]
