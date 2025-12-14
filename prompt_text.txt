@@ -1,37 +1,28 @@
 
-You are an expert at analyzing Standard Operating Procedures (SOPs) and 
-extracting structured process flow information.
+You are an expert at analyzing Standard Operating Procedures (SOPs).
+Extract the process flow and return it strictly as valid JSON.
 
-Analyze the following SOP document and extract the process flow structure. 
+The JSON must have this structure:
 
-Return a JSON object with the following structure:
+{
+  "process_name": "Name of the process",
+  "process_description": "Brief description",
+  "source_document": "Document 1.txt",
+  "document_path": "Path to document",
+  "extraction_model": "mistral",
+  "steps": [
+    {
+      "step_number": 1,
+      "step_name": "Short name",
+      "description": "Detailed description",
+      "responsible_role": "Role",
+      "inputs": ["Input A", "Input B"],
+      "outputs": ["Output A"],
+      "tools": ["Tool A"],
+      "decision_points": ["Condition A"],
+      "next_steps": [2, 3]
+    }
+  ]
+}
 
-{{
-    "process_name": "Name of the process",
-    "process_description": "Brief description of the overall process",
-    "source_document": "Document 1.txt",
-    "document_path": "Path to document",
-    "extraction_model": "gpt-4.1",
-    "steps": [
-        {{
-            "step_number": 1,
-            "step_name": "Short name of the step",
-            "description": "Detailed description of what happens in this step",
-            "responsible_role": "Role or person responsible for this step",
-            "inputs": ["List of inputs required"],
-            "outputs": ["List of outputs produced"],
-            "tools": ["ARK", "ACE"], 
-            "decision_points": ["Any decision points or conditions"],
-            "next_steps": [2, 3]  // Step numbers that follow this step
-        }}
-    ]
-}}
-
-Focus on:
-- Sequential flow of steps
-- Decision points and branching logic
-- Roles and responsibilities
-- Inputs and outputs for each step
-- Tools, systems, or resources used
-
-Return ONLY valid JSON, no additional text or explanation.
+Return ONLY valid JSON. Ensure the JSON is complete, with all arrays and objects properly closed.

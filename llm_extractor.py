@@ -35,6 +35,7 @@ import logging
 from typing import Dict, List, Optional, Any
 import os
 from pathlib import Path
+import re
 
 try:
     import openai
@@ -49,6 +50,30 @@ except ImportError:
     requests_available = False
 
 logger = logging.getLogger(__name__)
+
+def safe_json_loads(response_text: str):
+    import re, json
+    try:
+        return json.loads(response_text)
+    except json.JSONDecodeError:
+        match = re.search(r"\{.*\}", response_text, re.DOTALL)
+        if not match:
+            raise ValueError("No JSON object found in response")
+
+        cleaned = match.group(0)
+        cleaned = re.sub(r"//.*", "", cleaned)
+        cleaned = re.sub(r",(\s*[\]}])", r"\1", cleaned)
+
+        # Try parsing again
+        try:
+            return json.loads(cleaned)
+        except json.JSONDecodeError:
+            # If still invalid, try to auto‑close arrays/objects
+            if not cleaned.strip().endswith("}"):
+                cleaned += "}"  # add closing brace
+            if cleaned.count("[") > cleaned.count("]"):
+                cleaned += "]"  # add closing bracket
+            return json.loads(cleaned)
 
 class FlowExtractor:
     """
@@ -130,7 +155,7 @@ class FlowExtractor:
         if prompt_file:
             self.prompt_template = self._load_prompt_from_file(prompt_file)
         else:
-            self.prompt_template = custom_prompt or self.DEFAULT_PROMPT
+            self.prompt_template = custom_prompt or self.default_prompt
         
         # Initialize provider-specific clients
         if self.provider == "openai":
@@ -162,7 +187,16 @@ class FlowExtractor:
                 raise ImportError(
                     "Anthropic library is required. Install with: pip install anthropic"
                 )
-                
+
+        elif self.provider == "ollama":
+            # Ollama runs locally, no API key required
+            self.api_key = api_key or "none"
+            self.api_base_url = api_base_url or "http://localhost:11434/v1/chat/completions"
+            if not requests_available:
+                raise ImportError(
+                "Requests library is required for Ollama. Install with: pip install requests"
+            )
+
         elif self.provider == "custom":
             if not requests_available:
                 raise ImportError(
@@ -216,7 +250,25 @@ class FlowExtractor:
         except Exception as e:
             logger.error(f"Error reading prompt file {prompt_file}: {e}")
             raise
-    
+
+    def _call_ollama_api(self, prompt: str) -> str:
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "model": self.model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": self.temperature,
+                "num_predict": self.max_tokens
+            }
+        }
+
+        response = requests.post("http://localhost:11434/api/generate",
+                                headers=headers, json=payload, timeout=120)
+        response.raise_for_status()
+        data = response.json()
+        return data.get("response", "")
+
     def extract_process_flow(self, document_content: str, document_name: str = "") -> Dict[str, Any]:
         """
         Extract process flow structure from SOP document content.
@@ -247,7 +299,7 @@ class FlowExtractor:
         """
         # Truncate content if too long (most models have token limits)
 
-        max_content_length = 100000  # Approximate character limit
+        max_content_length = 20000  # Approximate character limit
 
         if len(document_content) > max_content_length:
             logger.warning(
@@ -266,6 +318,8 @@ class FlowExtractor:
                 response_text = self._call_openai_api(prompt)
             elif self.provider == "anthropic":
                 response_text = self._call_anthropic_api(prompt)
+            elif self.provider == "ollama":
+                response_text = self._call_ollama_api(prompt)
             elif self.provider == "custom":
                 response_text = self._call_custom_api(prompt)
             else:
@@ -273,7 +327,7 @@ class FlowExtractor:
             
             # Extract JSON from response
 
-            process_flow = json.loads(response_text)
+            process_flow = safe_json_loads(response_text)
             
             # Add metadata
 

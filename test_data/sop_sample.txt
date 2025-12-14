@@ -1,0 +1,21 @@
+
+When a new employee joins the company, the onboarding process begins with the 
+HR specialist reaching out to collect all required documentation. This includes 
+the signed offer letter, government identification, and completed tax forms. 
+Once these items are verified, the HR specialist creates an official employee 
+record in the HRIS system, ensuring that the profile is complete and accurate.
+
+After the profile is established, the IT administrator steps in to provision 
+accounts. They generate email credentials, Slack access, and any system logins 
+the employee will need. If the role requires elevated permissions, the 
+administrator consults with IT Security before granting access.
+
+With accounts ready, the hiring manager schedules an orientation session. 
+During this meeting, the manager reviews company policies, explains available 
+benefits, and sets expectations for the role. The employee receives orientation 
+materials and has the opportunity to ask questions.
+
+Following orientation, the manager assigns a mentor to guide the employee 
+through their first ninety days. The mentor is responsible for scheduling 
+an initial check‑in and providing ongoing support. This step ensures the 
+new hire has a clear point of contact as they integrate into the team.

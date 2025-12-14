@@ -14,7 +14,7 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 
-class FlowDatabase:
+class Database:
     """
     Manages database storage for process flow data.
     """

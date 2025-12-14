@@ -1,35 +1,35 @@
 
 from document_reader import DocumentReader
+from llm_extractor import FlowExtractor
+from database import Database
 
-target_folder = r"G:\My Drive\Personal\IIT\Deep Learning\Module 1"
+target_folder = r"G:\My Drive\Projects\stream\test_data"
 
+# Read all documents in the folder
 reader = DocumentReader(target_folder)
-
 documents = reader.read_all_documents()
 
-first_doc = documents[0]
+# Instantiate the extractor
+extractor = FlowExtractor(
+    provider="ollama",
+    model="mistral",
+    prompt_file="prompt_text.txt",
+    max_tokens = 1000
+)
 
-print()
-print(first_doc['path'])
-print()
-print(first_doc['name'])
-print()
-print(first_doc['extension'])
-print()
-#print(first_doc['content'])
-#print()
-print(first_doc['relative_path'])
+# Extract process flows from all documents
+flows = extractor.extract_from_documents(documents)
 
-import json
+# Print results
+for flow in flows:
+    print(f"Document: {flow['source_document']}")
+    print(f"Process Name: {flow['process_name']}")
+    print(f"Steps: {len(flow['steps'])}")
+    print("---")
 
-with open("test_processes.json", "r") as f:
-    process_flow = json.load(f)
+db = Database("stream.db")
 
-from flow_database import FlowDatabase  # adjust import to match your file name
-
-db = FlowDatabase("stream.db")
-
-process_id = db.insert_multiple(process_flow)
+process_id = db.insert_multiple(flows)
 
 print(f"Inserted process flow with ID {process_id}")
 

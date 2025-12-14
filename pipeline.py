@@ -13,7 +13,7 @@ from pathlib import Path
 
 from .document_reader import DocumentReader
 from .llm_extractor import ProcessFlowExtractor
-from .flow_database import ProcessFlowDatabase
+from .database import ProcessFlowDatabase
 
 logger = logging.getLogger(__name__)
 

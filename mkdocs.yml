@@ -1,0 +1,16 @@
+
+docs_dir: docs
+
+site_name: Stream Documentation
+theme: material
+nav:
+  - Home: index.md
+  - Guide:
+    - Setup: guide/setup.md
+    - Data: guide/data.md
+  - Class Reference: 
+    - Document Reader: classes/document_reader.md
+    - Database: classes/database.md
+    - LLM Extractor: classes/llm_extractor.md
+  - Usage:
+    - Example: usage/example.md

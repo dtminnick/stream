@@ -9,6 +9,6 @@ This module provides functionality to:
 
 from .document_reader import DocumentReader
 from .llm_extractor import FlowExtractor
-from .flow_database import FlowDatabase
+from .database import FDatabase
 
-__all__ = ['DocumentReader', 'ProcessFlowExtractor', 'FlowDatabase']
+__all__ = ['DocumentReader', 'ProcessFlowExtractor', 'Database']
