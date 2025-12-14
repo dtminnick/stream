@@ -51,6 +51,35 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+def chunk_text(text, chunk_size=3000):
+    """
+    Split text into chunks of roughly `chunk_size` characters.
+    """
+    return [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
+
+def merge_flows(flows, document_name, model_name="mistral"):
+    """
+    Merge multiple chunk-level process flows into one unified JSON.
+    Each flow is expected to follow the schema with 'steps'.
+    """
+    merged = {
+        "process_name": flows[0].get("process_name", "Unknown Process"),
+        "process_description": flows[0].get("process_description", ""),
+        "source_document": document_name,
+        "document_path": f"/path/to/{document_name}",
+        "extraction_model": model_name,
+        "steps": []
+    }
+
+    step_counter = 1
+    for flow in flows:
+        for step in flow.get("steps", []):
+            step["step_number"] = step_counter
+            merged["steps"].append(step)
+            step_counter += 1
+
+    return merged
+
 def safe_json_loads(response_text: str):
     import re, json
     try:
@@ -308,35 +337,36 @@ class FlowExtractor:
             )
             document_content = document_content[:max_content_length]
         
-        # Construct the prompt
+        # break into chunks
+        chunks = chunk_text(document_content, chunk_size=3000)
+        flows = []
 
-        prompt = f"{self.prompt_template}\n\n--- Document: {document_name} ---\n\n{document_content}"
-        
         try:
-            # Call appropriate API based on provider
-            if self.provider == "openai":
-                response_text = self._call_openai_api(prompt)
-            elif self.provider == "anthropic":
-                response_text = self._call_anthropic_api(prompt)
-            elif self.provider == "ollama":
-                response_text = self._call_ollama_api(prompt)
-            elif self.provider == "custom":
-                response_text = self._call_custom_api(prompt)
-            else:
-                raise ValueError(f"Unsupported provider: {self.provider}")
-            
-            # Extract JSON from response
+            for i, chunk in enumerate(chunks, 1):
+                # Build prompt for each chunk
+                prompt = f"{self.prompt_template}\n\n--- Document: {document_name} (part {i}) ---\n\n{chunk}"
 
-            process_flow = safe_json_loads(response_text)
-            
-            # Add metadata
+                # Call appropriate API
+                if self.provider == "openai":
+                    response_text = self._call_openai_api(prompt)
+                elif self.provider == "anthropic":
+                    response_text = self._call_anthropic_api(prompt)
+                elif self.provider == "ollama":
+                    response_text = self._call_ollama_api(prompt)
+                elif self.provider == "custom":
+                    response_text = self._call_custom_api(prompt)
+                else:
+                    raise ValueError(f"Unsupported provider: {self.provider}")
 
-            process_flow['source_document'] = document_name
-            process_flow['extraction_model'] = self.model
-            
+                # Parse JSON safely
+                flow = safe_json_loads(response_text)
+                flows.append(flow)
+
+            # Merge all chunk flows into one
+            merged_flow = merge_flows(flows, document_name, self.model)
+
             logger.info(f"Successfully extracted process flow from {document_name}")
-
-            return process_flow
+            return merged_flow
             
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse JSON response: {e}")

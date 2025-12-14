@@ -1,0 +1,16 @@
+
+When an employee incurs business expenses, the reimbursement process begins with 
+the employee completing an expense report. The report must include receipts for 
+travel, meals, or supplies, along with a clear description of the business purpose. 
+Once the report is submitted, the department manager reviews it for accuracy and 
+policy compliance. If the expenses exceed the manager’s approval threshold, the 
+report is escalated to the finance director for further review.
+
+After approval, the finance team enters the reimbursement request into the 
+accounting system. They verify bank details and schedule payment in the next 
+payroll cycle. If discrepancies are found, the finance team contacts the employee 
+to resolve them before processing. Finally, the employee receives reimbursement 
+via direct deposit and a confirmation email.
+
+This process ensures that all expenses are properly documented, reviewed, and 
+reimbursed in a timely manner.

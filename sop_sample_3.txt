@@ -1,0 +1,29 @@
+
+The product development lifecycle begins with the product manager drafting 
+a proposal based on market research and customer feedback. This proposal 
+outlines objectives, target audience, and expected outcomes. Once drafted, 
+the proposal is reviewed by the executive committee. If approved, the 
+project moves into the design phase.
+
+During design, UX designers create wireframes and prototypes, while engineers 
+provide technical feasibility assessments. The design team uses tools like 
+Figma and Jira to collaborate. Once prototypes are finalized, a design review 
+meeting is held. If the committee approves, development begins.
+
+In development, engineers build the product using agile sprints. Each 
+sprint includes planning, coding, testing, and review. QA testers validate 
+functionality against requirements, logging issues in the bug tracking system. 
+If critical bugs are found, the sprint is extended until resolved.
+
+After several sprints, the product enters user acceptance testing (UAT). 
+Selected customers test the product in real scenarios. Feedback is collected 
+and prioritized. If UAT passes, the release manager prepares deployment scripts 
+and coordinates with IT operations.
+
+Deployment involves rolling out the product to production servers, monitoring 
+system performance, and ensuring rollback plans are in place. Once live, 
+the customer support team is trained to handle inquiries. The product manager 
+schedules a post‑launch review to evaluate success metrics and gather lessons learned.
+
+This lifecycle ensures that products are designed, built, tested, and 
+deployed with quality and customer focus.

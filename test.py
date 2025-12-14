@@ -12,9 +12,9 @@ documents = reader.read_all_documents()
 # Instantiate the extractor
 extractor = FlowExtractor(
     provider="ollama",
-    model="mistral",
+    model="llama2:7b",
     prompt_file="prompt_text.txt",
-    max_tokens = 1000
+    max_tokens = 600
 )
 
 # Extract process flows from all documents
