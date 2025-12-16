@@ -12,7 +12,7 @@ documents = reader.read_all_documents()
 # Instantiate the extractor
 extractor = FlowExtractor(
     provider="ollama",
-    model="llama2:7b",
+    model="gemma:2b",
     prompt_file="prompt_text.txt",
     max_tokens = 600
 )
